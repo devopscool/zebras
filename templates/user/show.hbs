@@ -1,0 +1,112 @@
+{{#partial title}}{{user.username}} - Rust China{{/partial}}
+{{#partial page}}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">用户</h3>
+            </div>
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="/user/{{ user.id }}">
+                            <img class="media-object img-circle" src="{{ user.avatar }}" alt="{{ user.username }}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="media-heading">{{ user.username}}</h3>
+                        {{#if is_myself}}
+                            <h4 class="media-heading"><small>{{ user.email }}</small></h4>
+                        {{/if}}
+                        <h4 class="media-heading"><small>
+                            第 {{ which_member }} 位会员
+                            •
+                            {{ register_date }}
+                        </small></h4>
+                        <h4 class="media-heading"><small>
+                            {{ articles_count }} 个话题
+                            •
+                            {{ comments_count }} 个回帖
+                        </small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading panel-heading-no-padding">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="{{#if articles_active}}active{{/if}}"><a href="/user/{{user.id}}">{{#if is_myself}}我{{else}}Ta{{/if}}的话题</a></li>
+                    <li role="presentation" class="{{#if comments_active}}active{{/if}}"><a href="/user/{{user.id}}/comments">{{#if is_myself}}我{{else}}Ta{{/if}}的回帖</a></li>
+                    {{#if is_myself}}
+                    <li role="presentation" class="{{#if messages_active}}active{{/if}}"><a href="/user/{{user.id}}/messages">我的消息{{#if unread_messages_count}} <span class="badge">{{unread_messages_count}}</span>{{/if}}</a></li>
+                    {{/if}}
+                </ul>
+            </div>
+            <ul class="list-group">
+                {{#if articles}}
+                {{#each articles}}
+                    <li class="media list-group-item">
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="/article/{{id}}">{{title}}</a></h4>
+                            <h5 class="media-heading">
+                                <small>
+                                    <a href="/category/{{category.value}}">{{category.title}}</a>
+                                    •
+                                    <span class="time-label" date-time="{{create_time}}"></span>
+                                </small>
+                            </h5>
+                        </div>
+                        <div class="media-right media-middle">
+                            {{#if comments_count}}
+                                <h4><span class="label label-inverted label-primary">{{comments_count}}</span></h4>
+                            {{else}}
+                                <h4><span class="label comment-none">{{comments_count}}</span></h4>
+                            {{/if}}
+                        </div>
+                    </li>
+                {{/each}}
+                {{/if}}
+                {{#if comments}}
+                {{#each comments}}
+                    <li class="media list-group-item">
+                        <div class="media-body">
+                            <h4 class="media-heading" style="margin-bottom: 10px;"><a href="/article/{{article.id}}">{{article.title}}</a> <small><small><span class="time-label" date-time="{{create_time}}"></span></small></small></h4>
+                            {{{content}}}
+                        </div>
+                    </li>
+                {{/each}}
+                {{/if}}
+                {{#if messages}}
+                {{#each messages}}
+                    <li class="media list-group-item">
+                        <div class="media-left">
+                            <a href="/user/{{user_id}}">
+                                <img class="media-object img-circle" src="{{ avatar }}" style="width:36px;height:36px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading" style="margin-bottom: 10px;"><small><small><a href="/user/{{user_id}}">{{username}}</a> 在</small></small> <a href="/article/{{article_id}}">{{article_title}}</a> <small><small>中回复了你</small></small> <small><small><span class="time-label" date-time="{{create_time}}"></span></small></small></h4>
+                            {{{content}}}
+                        </div>
+                        {{#if is_new}}
+                            <div class="media-right media-middle">
+                                <span class="label label-inverted label-primary">New</span>
+                            </div>
+                        {{/if}}
+                    </li>
+                {{/each}}
+                {{/if}}
+            </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{{/partial}}
+{{#partial footer_js}}
+    <script>
+    </script>
+{{/partial}}
+{{~> base~}}
